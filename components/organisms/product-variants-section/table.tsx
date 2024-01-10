@@ -26,7 +26,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
   const { t } = useTranslation()
   const columns = useMemo<Column<ProductVariant>[]>(() => {
     const quantityColumns = []
-    if (!inventoryIsEnabled) {
+    // if (!inventoryIsEnabled) {
       quantityColumns.push({
         Header: () => {
           return (
@@ -48,7 +48,7 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
           )
         },
       })
-    }
+    // }
     return [
       {
         Header: t("product-variants-section-title", "Title"),
