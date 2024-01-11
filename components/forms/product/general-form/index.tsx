@@ -5,10 +5,10 @@ import TextArea from "../../../molecules/textarea"
 
 export type GeneralFormType = {
   title: string
-  subtitle: string | null
+  subtitle: string
   handle: string
   material: string | null
-  description: string | null
+  description: string
 }
 
 type Props = {
@@ -44,7 +44,13 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         <InputField
           label="Description"
           placeholder="Warm and cozy..."
+          required
           {...register(path("subtitle"), {
+            required: "Description is required",
+            minLength: {
+              value: 1,
+              message: "Description must be at least 1 character",
+            },
             pattern: FormValidator.whiteSpaceRule("Subtitle"),
           })}
           errors={errors}
@@ -88,13 +94,18 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
       </div>
       <TextArea
         label="Product Details"
+        required
         placeholder={
           isGiftCard ? "The gift card is..." : `          .100% Cotton
           .Imported...`
         }
         rows={3}
         className="mb-small"
-        {...register(path("description"))}
+        {...register(path("description"),{
+          required: "Product Details is required",
+          minLength: FormValidator.minOneCharRule("description"),
+            pattern: FormValidator.whiteSpaceRule("description"),
+        })}
         errors={errors}
       />
       <p className="inter-base-regular text-grey-50">
