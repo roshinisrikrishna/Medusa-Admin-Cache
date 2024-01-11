@@ -109,10 +109,10 @@ const NewProduct = ({ onClose }: Props) => {
       missingFields.push('Media Image');
     }
     if (!data.general.description) {
-      missingFields.push('Product Description');
+      missingFields.push('Product Details');
     }
     if (!data.general.subtitle) {
-      missingFields.push('Product Subtitle');
+      missingFields.push('Product Description');
     }
     if (!data.organize.categories || data.organize.categories.length === 0) {
       missingFields.push('Product Category');
