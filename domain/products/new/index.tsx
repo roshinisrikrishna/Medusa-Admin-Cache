@@ -97,6 +97,37 @@ const NewProduct = ({ onClose }: Props) => {
 
   const onSubmit = (publish = true) =>
     handleSubmit(async (data) => {
+      console.log('data', data);
+
+    let missingFields: string[] = []; // Explicitly declaring the type as string[]
+
+    // Check for missing fields and add to missingFields array
+    if (!data.thumbnail?.images?.length) {
+      missingFields.push('Thumbnail Image');
+    }
+    if (!data.media?.images?.length) {
+      missingFields.push('Media Image');
+    }
+    if (!data.general.description) {
+      missingFields.push('Product Description');
+    }
+    if (!data.general.subtitle) {
+      missingFields.push('Product Subtitle');
+    }
+    if (!data.organize.categories || data.organize.categories.length === 0) {
+      missingFields.push('Product Category');
+    }
+    if ((!data.variants.entries || data.variants?.entries?.length === 0) && 
+    (!data.variants.options || data.variants?.options?.length === 0)) {
+  missingFields.push('Product Variants');
+}
+    // If there are missing fields, prevent submission and show notification
+    if (missingFields.length > 0) {
+      let errorMessage = 'Please provide: ' + missingFields.join(', ');
+      notification(t("new-error", "Error"), errorMessage, "error");
+      return;
+    }
+
       const optionsToStockLocationsMap = new Map(
         data.variants.entries.map((variant) => {
           return [
@@ -114,6 +145,14 @@ const NewProduct = ({ onClose }: Props) => {
         publish,
         isFeatureEnabled("sales_channels")
       )
+      console.log('data.thumbnail ', data.thumbnail)
+      console.log('data.media ', data.media)
+      console.log('data.variants ', data.variants)
+      console.log('data.organize ', data.organize)
+      console.log('data.organize.categories ', data.organize.categories)
+
+
+
 
       if (data.media?.images?.length) {
         let preppedImages: FormImage[] = []
@@ -317,7 +356,7 @@ const NewProduct = ({ onClose }: Props) => {
                   </div>
                 </div>
               </Accordion.Item>
-              <Accordion.Item title="Variants" value="variants" required>
+              <Accordion.Item title="Variants" value="variants">
                 <p className="inter-base-regular text-grey-50">
                   {t(
                     "new-add-variations-of-this-product",
@@ -357,7 +396,7 @@ const NewProduct = ({ onClose }: Props) => {
                   <CustomsForm form={nestedForm(form, "customs")} />
                 </div>
               </Accordion.Item>
-              <Accordion.Item title="Thumbnail" value="thumbnail" required>
+              <Accordion.Item title="Thumbnail" value="thumbnail">
                 <p className="inter-base-regular mb-large text-grey-50">
                   {t(
                     "new-used-to-represent-your-product-during-checkout-social-sharing-and-more",
@@ -366,7 +405,7 @@ const NewProduct = ({ onClose }: Props) => {
                 </p>
                 <ThumbnailForm form={nestedForm(form, "thumbnail")} />
               </Accordion.Item>
-              <Accordion.Item title={t("new-media", "Media")} value="media" required>
+              <Accordion.Item title={t("new-media", "Media")} value="media">
                 <p className="inter-base-regular mb-large text-grey-50">
                   {t(
                     "new-add-images-to-your-product",
