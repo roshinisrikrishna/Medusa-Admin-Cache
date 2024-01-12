@@ -104,7 +104,6 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         {...register(path("description"),{
           required: "Product Details is required",
           minLength: FormValidator.minOneCharRule("description"),
-            pattern: FormValidator.whiteSpaceRule("description"),
         })}
         errors={errors}
       />
