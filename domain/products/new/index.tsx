@@ -117,8 +117,10 @@ const NewProduct = ({ onClose }: Props) => {
     if (!data.organize.categories || data.organize.categories.length === 0) {
       missingFields.push('Product Category');
     }
-    if ((!data.variants.entries || data.variants?.entries?.length === 0) && 
-    (!data.variants.options || data.variants?.options?.length === 0)) {
+    if (!data.variants.options || data.variants.options.length === 0) {
+  missingFields.push('Product Options');
+}
+if (!data.variants.entries|| data.variants.entries.length === 0) {
   missingFields.push('Product Variants');
 }
     // If there are missing fields, prevent submission and show notification
@@ -145,11 +147,11 @@ const NewProduct = ({ onClose }: Props) => {
         publish,
         isFeatureEnabled("sales_channels")
       )
-      console.log('data.thumbnail ', data.thumbnail)
-      console.log('data.media ', data.media)
-      console.log('data.variants ', data.variants)
-      console.log('data.organize ', data.organize)
-      console.log('data.organize.categories ', data.organize.categories)
+      // console.log('data.thumbnail ', data.thumbnail)
+      // console.log('data.media ', data.media)
+      // console.log('data.variants ', data.variants)
+      // console.log('data.organize ', data.organize)
+      // console.log('data.organize.categories ', data.organize.categories)
 
 
 
@@ -333,7 +335,7 @@ const NewProduct = ({ onClose }: Props) => {
                   <DiscountableForm form={nestedForm(form, "discounted")} />
                 </div>
               </Accordion.Item>
-              <Accordion.Item title="Organize" value="organize">
+              <Accordion.Item title="Organize" value="organize" required>
                 <p className="inter-base-regular text-grey-50">
                   {t(
                     "new-to-start-selling-all-you-need-is-a-name-and-a-price",
@@ -356,7 +358,7 @@ const NewProduct = ({ onClose }: Props) => {
                   </div>
                 </div>
               </Accordion.Item>
-              <Accordion.Item title="Variants" value="variants">
+              <Accordion.Item title="Variants" value="variants" required>
                 <p className="inter-base-regular text-grey-50">
                   {t(
                     "new-add-variations-of-this-product",
@@ -375,6 +377,24 @@ const NewProduct = ({ onClose }: Props) => {
                     productDimensions={watchedDimensions}
                   />
                 </div>
+              </Accordion.Item>
+              <Accordion.Item title="Thumbnail" value="thumbnail" required>
+                <p className="inter-base-regular mb-large text-grey-50">
+                  {t(
+                    "new-used-to-represent-your-product-during-checkout-social-sharing-and-more",
+                    "Used to represent your product during checkout, social sharing and more."
+                  )}
+                </p>
+                <ThumbnailForm form={nestedForm(form, "thumbnail")} />
+              </Accordion.Item>
+              <Accordion.Item title={t("new-media", "Media")} value="media" required>
+                <p className="inter-base-regular mb-large text-grey-50">
+                  {t(
+                    "new-add-images-to-your-product",
+                    "Add images to your product."
+                  )}
+                </p>
+                <MediaForm form={nestedForm(form, "media")} />
               </Accordion.Item>
               <Accordion.Item title="Attributes" value="attributes">
                 <p className="inter-base-regular text-grey-50">
@@ -395,24 +415,6 @@ const NewProduct = ({ onClose }: Props) => {
                   </h3>
                   <CustomsForm form={nestedForm(form, "customs")} />
                 </div>
-              </Accordion.Item>
-              <Accordion.Item title="Thumbnail" value="thumbnail">
-                <p className="inter-base-regular mb-large text-grey-50">
-                  {t(
-                    "new-used-to-represent-your-product-during-checkout-social-sharing-and-more",
-                    "Used to represent your product during checkout, social sharing and more."
-                  )}
-                </p>
-                <ThumbnailForm form={nestedForm(form, "thumbnail")} />
-              </Accordion.Item>
-              <Accordion.Item title={t("new-media", "Media")} value="media">
-                <p className="inter-base-regular mb-large text-grey-50">
-                  {t(
-                    "new-add-images-to-your-product",
-                    "Add images to your product."
-                  )}
-                </p>
-                <MediaForm form={nestedForm(form, "media")} />
               </Accordion.Item>
             </Accordion>
           </div>
