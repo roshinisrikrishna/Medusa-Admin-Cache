@@ -82,9 +82,10 @@ const ProductGeneralSection = ({ product }: Props) => {
           />
         }
       >
+        {/* <h2>Product Details</h2>
         <p className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap">
           {product.description}
-        </p>
+        </p> */}
         <ProductTags product={product} />
         <ProductDetails product={product} />
         <ProductSalesChannels product={product} />
@@ -123,7 +124,7 @@ const Detail = ({ title, value }: DetailProps) => {
 
   return (
     <div className="inter-base-regular text-grey-50 flex items-center justify-between">
-      <p>{title}</p>
+      <p style={{fontWeight: 500, paddingRight: "5px", marginRight: "5px"}}>{title}</p>
       <DetailValue />
     </div>
   )
@@ -136,10 +137,13 @@ const ProductDetails = ({ product }: Props) => {
   return (
     <div className="mt-8 flex flex-col gap-y-3">
       <h2 className="inter-base-semibold">
-        {t("product-general-section-details", "Details")}
+        {t("product-general-section-details", "Product Details")}
       </h2>
+      <p className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap">
+          {product.description}
+        </p>
       <Detail
-        title={t("product-general-section-subtitle", "Subtitle")}
+        title={t("product-general-section-subtitle", "Description")}
         value={product.subtitle}
       />
       <Detail
