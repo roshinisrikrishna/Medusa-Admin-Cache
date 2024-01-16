@@ -1,0 +1,29 @@
+/* Add this to your CSS file or a style tag in your component */
+.loading-spinner {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #000;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* EditFlowVariantForm.css */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .loading-text {
+    font-size: 16px; /* Adjust the font size as needed */
+    margin-top: 10px; /* Adjust the spacing as needed */
+  }
+  
