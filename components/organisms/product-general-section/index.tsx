@@ -18,7 +18,6 @@ import Section from "../section"
 import ChannelsModal from "./channels-modal"
 import GeneralModal from "./general-modal"
 
-
 type Props = {
   product: Product
 }
@@ -138,13 +137,13 @@ const ProductDetails = ({ product }: Props) => {
   return (
     <div className="mt-8 flex flex-col gap-y-3">
       <h2 className="inter-base-semibold">
-        {t("product-general-section-=product-details", "Product Details")}
+        {t("product-general-section-details", "Product Details")}
       </h2>
       <p className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap">
           {product.description}
         </p>
       <Detail
-        title={t("product-general-section-description", "Description")}
+        title={t("product-general-section-subtitle", "Description")}
         value={product.subtitle}
       />
       <Detail

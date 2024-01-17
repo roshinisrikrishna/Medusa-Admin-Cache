@@ -90,18 +90,28 @@ const ProductWidget = ({ product, notify }: ProductDetailsWidgetProps) => {
 
     // Call fetchImageUrls when component mounts or colorValues change
     useEffect(() => {
-        fetchImageUrls();
-    }, [colorValues]); // Dependency array
+      fetchImageUrls();
+  }, []); // Empty dependency array
+  
     // State to store image URLs
 
     // Function to handle image URL change
 
     const handleImageChange = (color, file) => {
-        setSelectedImages(prev => ({ ...prev, [color]: URL.createObjectURL(file) }));
+      // Check if the file is valid
+      if (file && file instanceof Blob) {
+        const objectURL = URL.createObjectURL(file);
+        setSelectedImages(prev => ({ ...prev, [color]: objectURL }));
         setSelectedFiles(prev => ({ ...prev, [color]: file }));
+        // Call fetchImageUrls to update the thumbnail URLs
+        fetchImageUrls();
+      } else {
+        // Handle invalid file case
+        console.error("Invalid file provided for image change.");
+      }
     };
-
-
+    
+  
     const updateThumbnailUrl = (color, url) => {
         setThumbnailUrls(prevUrls => ({ ...prevUrls, [color]: url }));
     };

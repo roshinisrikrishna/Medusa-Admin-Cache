@@ -16,7 +16,7 @@ import type {
     const medusa = new Medusa({ baseUrl: "http://localhost:9000", maxRetries: 3 })
     medusa.products.retrieve(product.id)
     .then(({ product }) => {
-      // console.log("product medusa ",product);
+      console.log("product medusa ",product);
     })
     const colorOptionId = product.options.find(option => option.title.toLowerCase() === "color")?.id;
 
@@ -39,11 +39,11 @@ import type {
 
     // Function to create the handle
   const createHandle = () => {
-    if (colorValues.length > 0) {
-      const title = product.title.toLowerCase().replace(/\s+/g, '-');
-      const color = colorValues[0].toLowerCase().replace(/\s+/g, '-');
-      return `${title}-${color}`;
-    }
+    // if (colorValues.length > 0) {
+    //   const title = product.title.toLowerCase().replace(/\s+/g, '-');
+    //   const color = colorValues[0].toLowerCase().replace(/\s+/g, '-');
+    //   return `${title}`;
+    // }
     return product.title.toLowerCase().replace(/\s+/g, '-');
   }
 
@@ -52,7 +52,7 @@ import type {
 
   useEffect(() => {
     const updateHandle = async () => {
-      if (product.handle !== handle) {
+      if (product.handle === handle) {
         try {
           const response = await axios.post('http://localhost:9000/store/updateHandle', {
             id: product.id,
@@ -171,9 +171,11 @@ useEffect(() => {
   
 
   // Call fetchImageUrls when component mounts or colorValues change
-  // useEffect(() => {
-  //   fetchImageUrls();
-  // }, [colorValues]); // Dependency array
+  useEffect(() => {
+    // Call fetchImageUrls when component mounts or colorValues change
+    fetchImageUrls();
+  }, []); // Adding colorValues as a dependency
+
  
   useEffect(() => {
     if (count > 0) {
@@ -228,18 +230,18 @@ useEffect(() => {
   
 return (
     <>
-    {isConditionMet || product.images.length <= 0 || !product.thumbnail || product.categories.length <= 0  || countUndefinedPrices > 0 ? (
+    {count>0 || product.images.length <= 0 || !product.thumbnail || product.categories.length <= 0  || countUndefinedPrices > 0 ? (
         <div style={{ background: "white", padding: '20px' }}>
           {errorMessage && (
         <div style={{ color: "red", padding: '20px',background:"green" }}>
           {errorMessage}
         </div>
       )}
-      {isConditionMet && (
+      {/* {isConditionMet && (
           <div style={{ color: "red" }}>
         Error: Please assign images for each color of the product {product.title}
       </div>
-      )}
+      )} */}
       {count > 0 && (
         <div style={{ color: "red" }}>
           Error: Please assign images for each color of the product {product.title}
