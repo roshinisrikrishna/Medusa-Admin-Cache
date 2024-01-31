@@ -47,6 +47,35 @@ const UserTable: React.FC<UserTableProps> = ({
   const { store, isLoading } = useAdminStore()
   const { t } = useTranslation()
 
+  const sendInviteEmail = async (email, token, role) => {
+    const requestBody = {
+      email: email,
+      link: token,
+      role: role
+    };
+  
+    try {
+      const response = await fetch('http://localhost:9000/store/inviteEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to send invitation email');
+      }
+  
+      const responseData = await response.json();
+      console.log('Invitation email sent successfully:', responseData);
+      // Handle success response here. You might want to notify the user that the email was sent successfully.
+    } catch (error) {
+      console.error('Error sending invitation email:', error);
+      // Handle error here. You might want to show an error message to the user.
+    }
+  };
+  
   useEffect(() => {
     setElements([
       ...users.map((user, i) => ({
@@ -82,7 +111,7 @@ const getRoleBadge = (role: string): { title: string, color: BadgeColor } => {
     case 'admin':
       color = 'green'; // Green color for admin
       break;
-    case 'employee':
+    case 'member':
       color = 'orange'; // Orange color for member
       break;
     default:
@@ -158,6 +187,7 @@ const getRoleBadge = (role: string): { title: string, color: BadgeColor } => {
               Medusa.invites
                 .resend(invite.id)
                 .then(() => {
+                  sendInviteEmail(invite.user_email, invite.token, invite.role)
                   notification(
                     t("templates-success", "Success"),
                     t(
@@ -175,6 +205,7 @@ const getRoleBadge = (role: string): { title: string, color: BadgeColor } => {
             label: t("templates-copy-invite-link", "Copy invite link"),
             disabled: isLoading,
             onClick: () => {
+              sendInviteEmail(invite.user_email, invite.token, invite.role)
               copy(inviteLink.replace("{invite_token}", invite.token))
               notification(
                 t("templates-success", "Success"),
