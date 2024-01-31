@@ -9,6 +9,7 @@ import EditIcon from "../fundamentals/icons/edit-icon"
 import RefreshIcon from "../fundamentals/icons/refresh-icon"
 import TrashIcon from "../fundamentals/icons/trash-icon"
 import StatusIndicator from "../fundamentals/status-indicator"
+import { Badge } from "@medusajs/ui"
 import SidebarTeamMember from "../molecules/sidebar-team-member"
 import Table from "../molecules/table"
 import DeletePrompt from "../organisms/delete-prompt"
@@ -71,7 +72,34 @@ const UserTable: React.FC<UserTableProps> = ({
     setSelectedInvite(null)
   }
 
+  type BadgeColor = "green" | "orange" | "red" | "blue" | "grey" | "purple" | undefined;
+
+const getRoleBadge = (role: string): { title: string, color: BadgeColor } => {
+  const normalizedRole = role.toLowerCase();
+  let color: BadgeColor;
+
+  switch (normalizedRole) {
+    case 'admin':
+      color = 'green'; // Green color for admin
+      break;
+    case 'employee':
+      color = 'orange'; // Orange color for member
+      break;
+    default:
+      color = 'grey'; // Default color for other roles
+      break;
+  }
+
+  return {
+    title: role.charAt(0).toUpperCase() + role.slice(1),
+    color
+  };
+};
+
   const getUserTableRow = (user: User, index: number) => {
+    const roleBadge = getRoleBadge(user.role);
+
+    console.log('user', user)
     return (
       <Table.Row
         key={`user-${index}`}
@@ -97,10 +125,13 @@ const UserTable: React.FC<UserTableProps> = ({
           <SidebarTeamMember user={user} />
         </Table.Cell>
         <Table.Cell className="w-80">{user.email}</Table.Cell>
-        <Table.Cell className="inter-small-semibold text-violet-60">
+        {/* <Table.Cell className="inter-small-semibold text-violet-60">
           {user.role.charAt(0).toUpperCase()}
           {user.role.slice(1)}
-        </Table.Cell>
+        </Table.Cell> */}
+        <Table.Cell className="inter-small-semibold text-violet-60">
+        <Badge title={roleBadge.title} color={roleBadge.color}>{roleBadge.title}</Badge>
+      </Table.Cell>
         <Table.Cell></Table.Cell>
       </Table.Row>
     )
