@@ -19,13 +19,16 @@ type InviteModalFormData = {
   role: Role
 }
 
+export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
 const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
   const notification = useNotification()
   const { t } = useTranslation()
 
   const { mutate, isLoading } = useAdminCreateInvite()
 
-  const { control, register, handleSubmit } = useForm<InviteModalFormData>()
+  const { control, register, handleSubmit, formState: { errors } } = useForm<InviteModalFormData>({mode:"onChange"});
+
 
   const onSubmit = (data: InviteModalFormData) => {
     mutate(
@@ -60,9 +63,9 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
   }
 
   const roleOptions: Role[] = [
-    { value: "employee", label: t("invite-modal-employee", "Employee") },
+    { value: "member", label: t("invite-modal-employee", "Employee") },
     { value: "admin", label: t("invite-modal-admin", "Admin") },
-    { value: "ceo", label: t("invite-modal-ceo", "CEO") },
+    { value: "developer", label: t("invite-modal-ceo", "CEO") },
   ]
 
   return (
@@ -76,18 +79,30 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
           </Modal.Header>
           <Modal.Content>
             <div className="gap-y-base flex flex-col">
-              <InputField
-                label={t("invite-modal-email", "Email")}
-                placeholder="lebron@james.com"
-                required
-                {...register("user", { required: true })}
-              />
+            <div className="flex flex-col gap-y-2">
+  <InputField
+    label={t("invite-modal-email", "Email")}
+    placeholder="lebron@james.com"
+    required
+    {...register("user", {
+      required: "Email is required",
+      pattern: {
+        value: emailPattern,
+        message: t("invite-modal-invalid-email", "Invalid email")
+      }
+    })}
+  />
+  {errors.user && (
+    <span className="text-red-500 text-sm">{errors.user.message}</span>
+  )}
+</div>
+
               <Controller
                 name="role"
                 control={control}
                 defaultValue={{
                   label: t("invite-modal-employee", "Employee"),
-                  value: "employee",
+                  value: "member",
                 }}
                 render={({ field: { value, onChange, onBlur, ref } }) => {
                   return (
