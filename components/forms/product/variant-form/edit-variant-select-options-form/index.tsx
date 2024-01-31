@@ -47,7 +47,7 @@ const EditVariantSelectOptionsForm = ({ form, options, onCreateOption, onOptionC
         const handleChange = (selectedOption) => {
           // Call the callback passed from the parent component
           onOptionChange(selectedOption, field);
-          console.log('selectedOption dropdown', selectedOption)
+        
           // Original onChange function call
           onChange(selectedOption);
         };
@@ -66,22 +66,18 @@ const EditVariantSelectOptionsForm = ({ form, options, onCreateOption, onOptionC
               options.filter((o) => o.option_id === field.id) || []
             }
             onCreateOption={(value) => {
-              console.log('createoption value', value)
-              console.log('createoption field.id', field.id)
-              console.log('createoption field.option_id', field.option_id)
-              console.log('createoption field', field)
               const newOption = {
-                option_id: field.id,
+                option_id: field.option_id,
                 value: value,
                 label: value,
               };
-              console.log('newOption', newOption)
-              // onCreateOption(field.id, value);
+
+              onCreateOption(field.option_id, value);
 
               // You might want to log here as well
               console.log("New Option Created:", newOption);
 
-              handleChange(newOption);
+              onChange(newOption);
             }}
           />
         );
