@@ -60,9 +60,9 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
   }
 
   const roleOptions: Role[] = [
-    { value: "member", label: t("invite-modal-member", "Member") },
+    { value: "employee", label: t("invite-modal-employee", "Employee") },
     { value: "admin", label: t("invite-modal-admin", "Admin") },
-    { value: "developer", label: t("invite-modal-developer", "Developer") },
+    { value: "ceo", label: t("invite-modal-ceo", "CEO") },
   ]
 
   return (
@@ -86,8 +86,8 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
                 name="role"
                 control={control}
                 defaultValue={{
-                  label: t("invite-modal-member", "Member"),
-                  value: "member",
+                  label: t("invite-modal-employee", "Employee"),
+                  value: "employee",
                 }}
                 render={({ field: { value, onChange, onBlur, ref } }) => {
                   return (
