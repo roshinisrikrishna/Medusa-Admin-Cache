@@ -7,44 +7,98 @@ import { isoAlpha2Countries } from "../../../utils/countries"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import Tooltip from "../../atoms/tooltip"
 import StatusDot from "../../fundamentals/status-indicator"
+import { Badge } from "@medusajs/ui"
 import CustomerAvatarItem from "../../molecules/customer-avatar-item"
 
 const useOrderTableColums = () => {
   const { t } = useTranslation()
+
+  const decideFulfillmentBadge = (status) => {
+    let badgeStyle;
+    let badgeText;
+
+    switch (status) {
+      case "not_fulfilled":
+        badgeStyle = {
+          background: "linear-gradient(to right, #fc9a19, #facc34)",
+          color: "white",
+          fontSize: "12px",
+          padding: "5px 10px",
+        };
+        badgeText = "Pending";
+        break;
+      case "fulfilled":
+        badgeStyle = {
+          background: "linear-gradient(to right, darkgreen, lightgreen)",
+          color: "white",
+          fontSize: "12px",
+          padding: "5px 10px",
+        };
+        badgeText = "Fulfilled";
+        break;
+      // Handle other statuses here...
+      default:
+        badgeStyle = {
+          background: "#696969", // Set background color for N/A
+          color: "#fff", // Adjust text color for better readability
+          fontSize: '12px',
+          padding: '5px 22px'
+        };
+        badgeText = "N/A";
+        break;
+    }
+
+    return <Badge style={badgeStyle}>{badgeText}</Badge>;
+  };
+
+
   const decideStatus = (status) => {
+    let badgeStyle;
+    let badgeText;
+
     switch (status) {
       case "captured":
-        return (
-          <StatusDot variant="success" title={t("order-table-paid", "Paid")} />
-        )
+        badgeStyle = {
+          background: "linear-gradient(to bottom right, #009245, #FCEE21)",
+          color: "white",
+          fontSize: "12px",
+          padding: "5px 20px",
+        };
+        badgeText = "Paid";
+        break;
       case "awaiting":
-        return (
-          <StatusDot
-            variant="default"
-            title={t("order-table-awaiting", "Awaiting")}
-          />
-        )
-      case "requires_action":
-        return (
-          <StatusDot
-            variant="danger"
-            title={t("order-table-requires-action", "Requires action")}
-          />
-        )
+        badgeStyle = {
+          background: "linear-gradient(to bottom right, #121C84, #8278DA)",
+          color: "white",
+          fontSize: "12px",
+          padding: "5px 15px",
+        };
+        badgeText = "Unpaid";
+        break;
       case "canceled":
-        return (
-          <StatusDot
-            variant="warning"
-            title={t("order-table-canceled", "Canceled")}
-          />
-        )
+        badgeStyle = {
+          background: "linear-gradient(to bottom right, #FF512F, #DD2476)",
+          color: "white",
+          fontSize: "12px",
+          padding: "5px 10px",
+        };
+        badgeText = "Canceled";
+        break;
       default:
-        return (
-          <StatusDot variant="primary" title={t("order-table-n-a", "N/A")} />
-        )
+        badgeStyle = {
+          background: "#878787",
+          color: "white",
+          fontSize: "12px",
+          padding: "5px 22px",
+        };
+        badgeText = "N/A";
+        break;
     }
-  }
 
+    badgeStyle.borderRadius = '20px'; // Adjust as needed
+
+    return <Badge style={badgeStyle}>{badgeText}</Badge>;
+  }
   const columns = useMemo(
     () => [
       {
@@ -87,7 +141,8 @@ const useOrderTableColums = () => {
       {
         Header: t("order-table-fulfillment", "Fulfillment"),
         accessor: "fulfillment_status",
-        Cell: ({ cell: { value } }) => value,
+        Cell: ({ cell: { value } }) => decideFulfillmentBadge(value),
+
       },
       {
         Header: t("order-table-payment-status", "Payment status"),
