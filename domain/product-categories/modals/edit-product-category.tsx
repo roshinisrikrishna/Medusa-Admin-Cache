@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-
 import { ProductCategory } from "@medusajs/medusa"
 import { useAdminUpdateProductCategory } from "medusa-react"
 import { TFunction } from "i18next"
