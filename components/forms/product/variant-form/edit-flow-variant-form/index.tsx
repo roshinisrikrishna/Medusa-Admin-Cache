@@ -22,7 +22,7 @@ import { useProduct } from "medusa-react"
 import { ProductOption } from "@medusajs/medusa"
 import InputError from "../../../../atoms/input-error"
 import React, { useState, useEffect } from 'react';
-import "./EditFlowVariantForm.css"
+
 
 export type EditFlowVariantFormType = {
   /**
@@ -114,7 +114,6 @@ const EditFlowVariantForm = ({ form, isEdit, option, onCreateOption }: Props) =>
 // Conditional useEffect hook for non-edit scenarios
 useEffect(() => {
   if (!isEdit) {
-    console.log('fields test', fields)
     fields.forEach((field, index) => {
       // Find the corresponding item in inputFieldOptions
       const correspondingOption = inputFieldOptions.find(option => option.title === field.title);
@@ -123,7 +122,6 @@ useEffect(() => {
         form.setValue(`options.${index}.value`, correspondingOption.value);
       }
     });
-    console.log('fields test after', fields)
   }
 }, [fields, form, inputFieldOptions, isEdit]);
 
@@ -137,21 +135,8 @@ useEffect(() => {
 
     const { product, isLoading } = useProduct(productId)
 
-    console.log('isLoading', isLoading)
-
-     // Check if product and product.options are defined
-  if (isLoading) {
-    // Render the loading container with text and spinner while loading
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <div className="loading-text">Loading Options...</div>
-      </div>
-    );
-  }
    // Check if product and product.options are defined
   if (!product || !product?.options) {
-    console.log('product not loading', product)
     console.log('Product or product options are undefined', product?.options);
     return; // Or handle this case as needed
   }
